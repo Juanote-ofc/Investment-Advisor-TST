@@ -1,0 +1,77 @@
+{
+  "mcpServers": {
+    "aws": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-aws"],
+      "env": {
+        "AWS_REGION": "us-east-1",
+        "AWS_PROFILE": "Juanelo"
+      },
+      "capabilities": {
+        "resources": true,
+        "tools": true,
+        "prompts": false
+      },
+      "description": "AWS services integration for Investment Advisor"
+    },
+    "bedrock": {
+      "command": "python",
+      "args": ["-m", "mcp_server_bedrock"],
+      "env": {
+        "AWS_REGION": "us-east-1",
+        "BEDROCK_MODELS": "amazon.titan-text-express-v1,amazon.nova-pro-v1:0"
+      },
+      "capabilities": {
+        "resources": false,
+        "tools": true,
+        "prompts": true
+      },
+      "description": "Amazon Bedrock AI model integration"
+    },
+    "s3": {
+      "command": "python",
+      "args": ["-m", "mcp_server_s3"],
+      "env": {
+        "AWS_REGION": "us-east-1",
+        "S3_BUCKETS": "investment-advisor-data-944308403469-us-east-1,investment-advisor-kb-944308403469-us-east-1"
+      },
+      "capabilities": {
+        "resources": true,
+        "tools": true,
+        "prompts": false
+      },
+      "description": "S3 storage operations for investment data"
+    },
+    "portfolio": {
+      "command": "python",
+      "args": ["-m", "mcp_server_portfolio"],
+      "env": {
+        "PORTFOLIO_ENGINE": "quantlib",
+        "RISK_MODELS": "var,cvar,sharpe"
+      },
+      "capabilities": {
+        "resources": false,
+        "tools": true,
+        "prompts": true
+      },
+      "description": "Portfolio optimization and risk analysis"
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "file": "/app/logs/mcp.log"
+  },
+  "security": {
+    "allowedOrigins": ["http://localhost:8501", "https://*.amazonaws.com"],
+    "rateLimiting": {
+      "enabled": true,
+      "requestsPerMinute": 100
+    }
+  },
+  "cache": {
+    "enabled": true,
+    "ttl": 300,
+    "maxSize": "100MB"
+  }
+}

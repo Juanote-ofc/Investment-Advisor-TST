@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Advisor AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #2c3e50;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .results h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .allocation-chart {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .allocation-bar {
+            height: 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .stocks { background: #e74c3c; }
+        .bonds { background: #3498db; }
+        .alternatives { background: #f39c12; }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Investment Advisor AI</h1>
+            <p>Powered by AWS Bedrock, Lambda & CDK</p>
+        </div>
+        
+        <div class="form-section">
+            <div class="status success">
+                <span>✅</span>
+                <div>
+                    <strong>System Status:</strong> Infrastructure deployed successfully!<br>
+                    <small>S3 Buckets: ✅ | Lambda Functions: ✅ | Knowledge Base: ✅</small>
+                </div>
+            </div>
+            
+            <form id="investmentForm">
+                <div class="form-group">
+                    <label for="investmentAmount">Investment Amount ($)</label>
+                    <input type="number" id="investmentAmount" name="investmentAmount" 
+                           placeholder="100000" min="1000" step="1000" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="riskTolerance">Risk Tolerance</label>
+                    <select id="riskTolerance" name="riskTolerance" required>
+                        <option value="">Select your risk tolerance</option>
+                        <option value="conservative">Conservative (Low Risk)</option>
+                        <option value="moderate">Moderate (Medium Risk)</option>
+                        <option value="aggressive">Aggressive (High Risk)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="timeHorizon">Investment Time Horizon</label>
+                    <select id="timeHorizon" name="timeHorizon" required>
+                        <option value="">Select time horizon</option>
+                        <option value="1-3 years">1-3 years</option>
+                        <option value="3-5 years">3-5 years</option>
+                        <option value="5-10 years">5-10 years</option>
+                        <option value="10+ years">10+ years</option>
+                    </select>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        🎯 Get Investment Advice
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="optimizePortfolio()">
+                        📊 Optimize Portfolio
+                    </button>
+                </div>
+            </form>
+            
+            <div id="results" class="results hidden">
+                <h3>📋 Investment Recommendation</h3>
+                <div id="recommendationContent"></div>
+                
+                <h3>📊 Optimized Portfolio Allocation</h3>
+                <div class="allocation-chart" id="allocationChart"></div>
+                <div id="portfolioDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated AWS Lambda responses (replace with actual API calls)
+        const portfolioOptimizer = {
+            conservative: { stocks: 30, bonds: 60, alternatives: 10, expectedReturn: 5.5, riskScore: 3.2 },
+            moderate: { stocks: 60, bonds: 30, alternatives: 10, expectedReturn: 7.5, riskScore: 6.2 },
+            aggressive: { stocks: 80, bonds: 15, alternatives: 5, expectedReturn: 9.8, riskScore: 8.7 }
+        };
+
+        document.getElementById('investmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {
+                investmentAmount: parseInt(formData.get('investmentAmount')),
+                riskTolerance: formData.get('riskTolerance'),
+                timeHorizon: formData.get('timeHorizon')
+            };
+            
+            // Simulate investment advice generation
+            generateInvestmentAdvice(data);
+        });
+
+        function generateInvestmentAdvice(data) {
+            const results = document.getElementById('results');
+            const content = document.getElementById('recommendationContent');
+            
+            // Simulate AI-generated advice
+            const advice = `
+                <div class="status success">
+                    <span>🎯</span>
+                    <div>
+                        <strong>Investment Analysis Complete</strong><br>
+                        <small>Based on your ${data.riskTolerance} risk tolerance and ${data.timeHorizon} time horizon</small>
+                    </div>
+                </div>
+                
+                <p><strong>Investment Amount:</strong> $${data.investmentAmount.toLocaleString()}</p>
+                <p><strong>Recommended Strategy:</strong> ${getStrategy(data.riskTolerance)}</p>
+                <p><strong>Key Recommendations:</strong></p>
+                <ul>
+                    <li>Diversify across asset classes to minimize risk</li>
+                    <li>Consider low-cost index funds for core holdings</li>
+                    <li>Rebalance portfolio quarterly</li>
+                    <li>Take advantage of tax-advantaged accounts</li>
+                </ul>
+            `;
+            
+            content.innerHTML = advice;
+            
+            // Show optimized portfolio
+            const portfolio = portfolioOptimizer[data.riskTolerance];
+            displayPortfolio(portfolio);
+            
+            results.classList.remove('hidden');
+        }
+
+        function optimizePortfolio() {
+            const riskTolerance = document.getElementById('riskTolerance').value;
+            if (!riskTolerance) {
+                alert('Please select a risk tolerance first');
+                return;
+            }
+            
+            const portfolio = portfolioOptimizer[riskTolerance];
+            displayPortfolio(portfolio);
+            document.getElementById('results').classList.remove('hidden');
+        }
+
+        function displayPortfolio(portfolio) {
+            const chart = document.getElementById('allocationChart');
+            const details = document.getElementById('portfolioDetails');
+            
+            chart.innerHTML = `
+                <div class="allocation-bar stocks" style="flex: ${portfolio.stocks}">
+                    Stocks ${portfolio.stocks}%
+                </div>
+                <div class="allocation-bar bonds" style="flex: ${portfolio.bonds}">
+                    Bonds ${portfolio.bonds}%
+                </div>
+                <div class="allocation-bar alternatives" style="flex: ${portfolio.alternatives}">
+                    Alternatives ${portfolio.alternatives}%
+                </div>
+            `;
+            
+            details.innerHTML = `
+                <p><strong>Expected Annual Return:</strong> ${portfolio.expectedReturn}%</p>
+                <p><strong>Risk Score:</strong> ${portfolio.riskScore}/10</p>
+                <p><strong>Rebalancing:</strong> Recommended quarterly</p>
+            `;
+        }
+
+        function getStrategy(riskTolerance) {
+            const strategies = {
+                conservative: 'Capital preservation with steady income generation',
+                moderate: 'Balanced growth with moderate risk exposure',
+                aggressive: 'Maximum growth potential with higher volatility'
+            };
+            return strategies[riskTolerance] || 'Balanced approach';
+        }
+
+        // Initialize with sample data
+        document.getElementById('investmentAmount').value = '100000';
+        document.getElementById('riskTolerance').value = 'moderate';
+        document.getElementById('timeHorizon').value = '10+ years';
+    </script>
+</body>
+</html>

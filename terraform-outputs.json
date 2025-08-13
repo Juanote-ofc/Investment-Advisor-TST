@@ -1,0 +1,47 @@
+{
+  "alb_dns_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "investment-advisor-dev-alb-1488213772.us-east-1.elb.amazonaws.com"
+  },
+  "application_url": {
+    "sensitive": false,
+    "type": "string",
+    "value": "http://investment-advisor-dev-alb-1488213772.us-east-1.elb.amazonaws.com"
+  },
+  "bedrock_execution_role_arn": {
+    "sensitive": false,
+    "type": "string",
+    "value": "arn:aws:iam::944308403469:role/investment-advisor-dev-bedrock-execution-role"
+  },
+  "ecs_cluster_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "investment-advisor-dev-cluster"
+  },
+  "ecs_service_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "investment-advisor-dev-service"
+  },
+  "s3_assets_bucket": {
+    "sensitive": false,
+    "type": "string",
+    "value": "investment-advisor-dev-assets-accce88f"
+  },
+  "s3_data_bucket": {
+    "sensitive": false,
+    "type": "string",
+    "value": "investment-advisor-dev-data-accce88f"
+  },
+  "s3_knowledge_base_bucket": {
+    "sensitive": false,
+    "type": "string",
+    "value": "investment-advisor-dev-kb-accce88f"
+  },
+  "vpc_id": {
+    "sensitive": false,
+    "type": "string",
+    "value": "vpc-00c9633ed9dc74603"
+  }
+}

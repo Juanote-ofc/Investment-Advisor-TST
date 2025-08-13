@@ -1,0 +1,37 @@
+# Investment Advisor AI - Streamlit Configuration
+
+[global]
+# Development mode - set to false for local testing
+developmentMode = false
+
+[server]
+# Server configuration
+port = 8501
+address = "localhost"
+baseUrlPath = ""
+enableCORS = false
+enableXsrfProtection = true
+maxUploadSize = 200
+maxMessageSize = 200
+
+[browser]
+# Browser configuration
+gatherUsageStats = false
+
+[runner]
+# Runner configuration
+magicEnabled = true
+postScriptGC = true
+fastReruns = true
+
+[logger]
+# Logging configuration
+level = "info"
+
+[theme]
+# Investment Advisor Theme
+primaryColor = "#667eea"           # Blue gradient primary
+backgroundColor = "#ffffff"        # White background
+secondaryBackgroundColor = "#f0f2f6"  # Light gray
+textColor = "#262730"             # Dark text
+font = "sans serif"               # Clean font
